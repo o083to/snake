@@ -1,6 +1,6 @@
-package ru.o083to.model;
+package o083to.model;
 
-import ru.o083to.model.snake.Snake;
+import o083to.model.snake.Snake;
 
 public class Board {
 

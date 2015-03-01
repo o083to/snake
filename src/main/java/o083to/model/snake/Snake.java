@@ -1,8 +1,8 @@
-package ru.o083to.model.snake;
+package o083to.model.snake;
 
-import ru.o083to.model.Animal;
-import ru.o083to.model.Cell;
-import ru.o083to.model.Direction;
+import o083to.model.Animal;
+import o083to.model.Cell;
+import o083to.model.Direction;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -16,7 +16,8 @@ public class Snake extends Animal {
     private Direction direction = Direction.DOWN;
     private LinkedList<Cell> body;
 
-    public Snake(int length) {
+    public Snake(int length, int delay) {
+        super(delay);
         this.length = length;
         body = new LinkedList<Cell>();
         for (int y = 0; y < length; y++) {
@@ -37,6 +38,7 @@ public class Snake extends Animal {
         // todo: пока что просто движется вперёд
         List<Cell> changeList = new ArrayList<Cell>(3);
         changeList.add(body.removeLast());
+        changeList.add(body.getLast());
         changeList.add(body.getFirst());
         // todo: проверка столкновения со стеной
         Cell newHeadPosition = getNewHeadPosition(body.getFirst());

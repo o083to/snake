@@ -1,11 +1,12 @@
-package ru.o083to.view;
+package o083to.view;
 
-import ru.o083to.model.Board;
-import ru.o083to.model.Cell;
-import ru.o083to.model.snake.Snake;
+import o083to.model.Board;
+import o083to.model.Cell;
+import o083to.model.snake.Snake;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseListener;
 import java.util.LinkedList;
 
 public class GameBoard extends JPanel {
@@ -26,6 +27,10 @@ public class GameBoard extends JPanel {
 
     public void setBoard(Board board) {
         this.board = board;
+    }
+
+    public void addMouseClickListener(MouseListener controller) {
+        addMouseListener(controller);
     }
 
     @Override

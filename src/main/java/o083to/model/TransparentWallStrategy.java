@@ -1,4 +1,4 @@
-package ru.o083to.model;
+package o083to.model;
 
 public class TransparentWallStrategy implements WallCollisionStrategy {
 
