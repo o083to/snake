@@ -6,7 +6,7 @@ import java.util.List;
 
 public abstract class Observable {
 
-    private List<StateListener> listeners = new ArrayList<StateListener>();
+    private final List<StateListener> listeners = new ArrayList<StateListener>();
 
     public void addListener(StateListener stateListener) {
         listeners.add(stateListener);

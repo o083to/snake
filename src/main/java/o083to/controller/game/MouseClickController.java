@@ -1,25 +1,23 @@
-package o083to.controller;
+package o083to.controller.game;
 
+import o083to.model.Game;
 import o083to.model.Direction;
-import o083to.model.snake.Snake;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class MouseClickController implements MouseListener {
+public class MouseClickController extends Controller implements MouseListener {
 
-    private final Snake snake;
-
-    public MouseClickController(Snake snake) {
-        this.snake = snake;
+    public MouseClickController(Game game) {
+        super(game);
     }
 
     public void mouseClicked(MouseEvent e) {
         if (SwingUtilities.isLeftMouseButton(e)) {
-            snake.turn(Direction.LEFT);
+            game.turnSnake(Direction.LEFT);
         } else if (SwingUtilities.isRightMouseButton(e)) {
-            snake.turn(Direction.RIGHT);
+            game.turnSnake(Direction.RIGHT);
         }
     }
 

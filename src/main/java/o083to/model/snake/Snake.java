@@ -1,6 +1,6 @@
 package o083to.model.snake;
 
-import o083to.model.Animal;
+import o083to.model.Player;
 import o083to.model.Cell;
 import o083to.model.Direction;
 
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Snake extends Animal {
+public class Snake extends Player {
 
     private static final int INIT_X = 0;
 
@@ -50,13 +50,13 @@ public class Snake extends Animal {
     private Cell getNewHeadPosition(Cell oldHeadPosition) {
         switch (direction) {
             case DOWN:
-                return board.getDownCell(oldHeadPosition);
+                return game.getDownCell(oldHeadPosition);
             case RIGHT:
-                return board.getRightCell(oldHeadPosition);
+                return game.getRightCell(oldHeadPosition);
             case UP:
-                return board.getUpCell(oldHeadPosition);
+                return game.getUpCell(oldHeadPosition);
             case LEFT:
-                return board.getLeftCell(oldHeadPosition);
+                return game.getLeftCell(oldHeadPosition);
         }
         return oldHeadPosition;
     }

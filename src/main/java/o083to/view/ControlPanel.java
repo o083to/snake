@@ -1,5 +1,7 @@
 package o083to.view;
 
+import o083to.controller.ui.ButtonStateController;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -30,6 +32,10 @@ public class ControlPanel extends JPanel {
         box.add(startButton);
         box.add(pauseButton);
         box.add(stopButton);
+        ButtonStateController buttonStateController = new ButtonStateController(startButton, pauseButton, stopButton);
+        startButton.addActionListener(buttonStateController);
+        pauseButton.addActionListener(buttonStateController);
+        stopButton.addActionListener(buttonStateController);
         add(box);
     }
 

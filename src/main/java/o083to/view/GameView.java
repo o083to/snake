@@ -1,6 +1,6 @@
 package o083to.view;
 
-import o083to.model.Board;
+import o083to.model.Game;
 import o083to.model.StateListener;
 
 import java.awt.event.ActionListener;
@@ -8,7 +8,7 @@ import java.awt.event.MouseListener;
 
 public interface GameView extends StateListener {
 
-    void setBoard(Board board);
+    void setGame(Game game);
 
     void addMouseClickController(MouseListener controller);
 

@@ -1,6 +1,6 @@
 package o083to.view;
 
-import o083to.model.Board;
+import o083to.model.Game;
 import o083to.model.Cell;
 
 import javax.swing.*;
@@ -27,8 +27,8 @@ public class GUIGameView extends JFrame implements GameView {
         setVisible(true);
     }
 
-    public void setBoard(Board board) {
-        gameBoard.setBoard(board);
+    public void setGame(Game game) {
+        gameBoard.setGame(game);
     }
 
     public void update(Collection<Cell> cells) {

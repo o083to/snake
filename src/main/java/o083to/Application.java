@@ -1,28 +1,31 @@
 package o083to;
 
-import o083to.controller.MouseClickController;
-import o083to.model.Board;
+import o083to.controller.game.MouseClickController;
+import o083to.controller.game.PauseGameController;
+import o083to.controller.game.StartGameController;
+import o083to.controller.game.StopGameController;
+import o083to.model.Game;
 import o083to.model.TransparentWallStrategy;
-import o083to.model.snake.Snake;
 import o083to.view.GUIGameView;
 import o083to.view.GameView;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class Application {
 
     public static void main(String[] args) {
-        Snake snake = new Snake(3, 1000);
-        Board board = new Board(10, 10, new TransparentWallStrategy(10, 10));
-        board.setSnake(snake);
-        snake.setBoard(board);
+        Game game = new Game(
+                new TransparentWallStrategy(10, 10),
+                3,
+                1000
+        );
         GameView view = new GUIGameView(10, 10);
-        view.setBoard(board);
-        snake.addListener(view);
-        MouseClickController snakeController = new MouseClickController(snake);
+        view.setGame(game);
+        game.getSnake().addListener(view);
+
+        MouseClickController snakeController = new MouseClickController(game);
         view.addMouseClickController(snakeController);
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.submit(snake);
+
+        view.addStartGameController(new StartGameController(game));
+        view.addPauseGameController(new PauseGameController(game));
+        view.addStopGameController(new StopGameController(game));
     }
 }

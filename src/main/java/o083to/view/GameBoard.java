@@ -1,6 +1,6 @@
 package o083to.view;
 
-import o083to.model.Board;
+import o083to.model.Game;
 import o083to.model.Cell;
 import o083to.model.snake.Snake;
 
@@ -18,15 +18,15 @@ public class GameBoard extends JPanel {
 
     private static final Color BACKGROUND_COLOR = Color.BLACK;
     private static final Color SNAKE_COLOR = Color.YELLOW;
-    private Board board;
+    private Game game;
 
     public GameBoard(int widthInCells, int heightInCells) {
         setPreferredSize(new Dimension(widthInCells * CELL_SIZE, heightInCells * CELL_SIZE));
         setBackground(BACKGROUND_COLOR);
     }
 
-    public void setBoard(Board board) {
-        this.board = board;
+    public void setGame(Game game) {
+        this.game = game;
     }
 
     public void addMouseClickListener(MouseListener controller) {
@@ -36,9 +36,9 @@ public class GameBoard extends JPanel {
     @Override
     public void paint(Graphics graphics) {
         super.paint(graphics);
-        if (board != null) {
+        if (game != null) {
             Graphics2D g2d = (Graphics2D) graphics;
-            paintSnake(g2d, board.getSnake());
+            paintSnake(g2d, game.getSnake());
         }
     }
 
