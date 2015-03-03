@@ -1,6 +1,6 @@
 package o083to.view;
 
-import o083to.model.Game;
+import o083to.Game;
 import o083to.model.Cell;
 import o083to.model.snake.Snake;
 
@@ -36,10 +36,8 @@ public class GameBoard extends JPanel {
     @Override
     public void paint(Graphics graphics) {
         super.paint(graphics);
-        if (game != null) {
-            Graphics2D g2d = (Graphics2D) graphics;
-            paintSnake(g2d, game.getSnake());
-        }
+        Graphics2D g2d = (Graphics2D) graphics;
+        paintSnake(g2d, game.getSnake());
     }
 
     private static void paintSnake(Graphics2D g2d, Snake snake) {

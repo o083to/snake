@@ -50,13 +50,13 @@ public class Snake extends Player {
     private Cell getNewHeadPosition(Cell oldHeadPosition) {
         switch (direction) {
             case DOWN:
-                return game.getDownCell(oldHeadPosition);
+                return board.getDownCell(oldHeadPosition);
             case RIGHT:
-                return game.getRightCell(oldHeadPosition);
+                return board.getRightCell(oldHeadPosition);
             case UP:
-                return game.getUpCell(oldHeadPosition);
+                return board.getUpCell(oldHeadPosition);
             case LEFT:
-                return game.getLeftCell(oldHeadPosition);
+                return board.getLeftCell(oldHeadPosition);
         }
         return oldHeadPosition;
     }

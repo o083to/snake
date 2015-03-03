@@ -1,6 +1,6 @@
 package o083to.controller.game;
 
-import o083to.model.Game;
+import o083to.Game;
 
 public abstract class Controller {
 

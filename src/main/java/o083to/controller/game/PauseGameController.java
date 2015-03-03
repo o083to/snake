@@ -1,6 +1,6 @@
 package o083to.controller.game;
 
-import o083to.model.Game;
+import o083to.Game;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

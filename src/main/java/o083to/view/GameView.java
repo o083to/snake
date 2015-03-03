@@ -1,6 +1,6 @@
 package o083to.view;
 
-import o083to.model.Game;
+import o083to.Game;
 import o083to.model.StateListener;
 
 import java.awt.event.ActionListener;

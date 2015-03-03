@@ -2,7 +2,7 @@ package o083to.model;
 
 public abstract class Player extends Observable implements Runnable {
 
-    protected Game game;
+    protected Board board;
     private final int delay;
 
     private volatile boolean isMoving = true;
@@ -12,8 +12,8 @@ public abstract class Player extends Observable implements Runnable {
         this.delay = delay;
     }
 
-    public void setGame(Game game) {
-        this.game = game;
+    public void setBoard(Board board) {
+        this.board = board;
     }
 
     protected abstract void move();
