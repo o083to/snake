@@ -22,7 +22,7 @@ public enum Direction {
         return fromInteger(newOrdinal);
     }
 
-    private static Direction fromInteger(int value) {
+    public static Direction fromInteger(int value) {
         switch (value) {
             case 0:
                 return DOWN;

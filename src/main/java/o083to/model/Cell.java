@@ -16,6 +16,7 @@ public class Cell {
         Cell cell = CACHE.get(getHash(x, y));
         if (cell == null) {
             cell = new Cell(x, y);
+            CACHE.put(getHash(x, y), cell);
         }
         return cell;
     }
@@ -31,6 +32,19 @@ public class Cell {
     private Cell(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cell cell = (Cell) o;
+        return  x == cell.x && y == cell.y;
+    }
+
+    @Override
+    public int hashCode() {
+        return getHash(x, y);
     }
 
     private static int getHash(int x, int y) {

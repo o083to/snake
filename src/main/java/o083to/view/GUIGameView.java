@@ -1,7 +1,6 @@
 package o083to.view;
 
 import o083to.Game;
-import o083to.model.Board;
 import o083to.model.Cell;
 
 import javax.swing.*;

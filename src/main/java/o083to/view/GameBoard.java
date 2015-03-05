@@ -2,12 +2,14 @@ package o083to.view;
 
 import o083to.Game;
 import o083to.model.Cell;
+import o083to.model.frog.Frog;
 import o083to.model.snake.Snake;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseListener;
-import java.util.LinkedList;
+import java.util.*;
+import java.util.List;
 
 public class GameBoard extends JPanel {
 
@@ -15,9 +17,11 @@ public class GameBoard extends JPanel {
     public static final int SNAKE_HEAD_DIAMETER = 32;
     public static final int SNAKE_BODY_DIAMETER = 24;
     public static final int SNAKE_TAIL_DIAMETER = 16;
+    public static final int FROG_DIAMETER = 24;
 
     private static final Color BACKGROUND_COLOR = Color.BLACK;
     private static final Color SNAKE_COLOR = Color.YELLOW;
+    private static final Color GREEN_FROG_COLOR = Color.GREEN;
     private Game game;
 
     public GameBoard(int widthInCells, int heightInCells) {
@@ -38,6 +42,7 @@ public class GameBoard extends JPanel {
         super.paint(graphics);
         Graphics2D g2d = (Graphics2D) graphics;
         paintSnake(g2d, game.getSnake());
+        paintFrogs(g2d, game.getFrogs());
     }
 
     private static void paintSnake(Graphics2D g2d, Snake snake) {
@@ -47,6 +52,13 @@ public class GameBoard extends JPanel {
             paintCircle(g2d, body.get(i), SNAKE_BODY_DIAMETER, SNAKE_COLOR);
         }
         paintCircle(g2d, body.getLast(), SNAKE_TAIL_DIAMETER, SNAKE_COLOR);
+    }
+
+    private static void paintFrogs(Graphics2D g2d, List<Frog> frogs) {
+        // todo: они разные
+        for (Frog frog : frogs) {
+            paintCircle(g2d, frog.getBody(), FROG_DIAMETER, GREEN_FROG_COLOR);
+        }
     }
 
     private static void paintCircle(Graphics2D g2d, Cell cell, int diameter, Color color) {
