@@ -41,8 +41,8 @@ public class GameBoard extends JPanel {
     public void paint(Graphics graphics) {
         super.paint(graphics);
         Graphics2D g2d = (Graphics2D) graphics;
-        paintSnake(g2d, game.getSnake());
         paintFrogs(g2d, game.getFrogs());
+        paintSnake(g2d, game.getSnake());
     }
 
     private static void paintSnake(Graphics2D g2d, Snake snake) {
@@ -57,7 +57,7 @@ public class GameBoard extends JPanel {
     private static void paintFrogs(Graphics2D g2d, List<Frog> frogs) {
         // todo: они разные
         for (Frog frog : frogs) {
-            paintCircle(g2d, frog.getBody(), FROG_DIAMETER, GREEN_FROG_COLOR);
+            paintCircle(g2d, frog.getPosition(), FROG_DIAMETER, GREEN_FROG_COLOR);
         }
     }
 

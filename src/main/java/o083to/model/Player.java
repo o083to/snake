@@ -34,7 +34,7 @@ public abstract class Player extends Observable implements Runnable {
         while (isAlive) {
             try {
                 Thread.sleep(delay);
-                if (isMoving) {
+                if (isMoving && isAlive) {
                     move();
                 }
             } catch (InterruptedException e) {

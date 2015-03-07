@@ -37,6 +37,7 @@ public class Snake extends Player {
     protected void move() {
         // todo: пока что просто движется вперёд
         List<Cell> changeList = new ArrayList<Cell>(3);
+        board.releaseCell(body.getLast());
         changeList.add(body.removeLast());
         changeList.add(body.getLast());
         changeList.add(body.getFirst());

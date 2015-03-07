@@ -49,6 +49,6 @@ public class Cell {
 
     private static int getHash(int x, int y) {
         // if x = 12 and y = 34 then hash = 1234
-        return x * (y / 10 + 1) + y;
+        return x * (int)Math.pow(10, y / 10 + 1) + y;
     }
 }

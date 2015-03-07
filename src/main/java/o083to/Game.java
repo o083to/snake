@@ -24,6 +24,7 @@ public class Game {
     private static final int M = 10;
     private static final int LENGTH = 3;
     private static final int SNAKE_DELAY = 1000;
+    private static final int DELAY = 150;
     private static final int FROG_DELAY_MULTIPLIER = 2;
     private static final int FROGS_COUNT = 8;
 
@@ -61,16 +62,36 @@ public class Game {
 
     public void startPlayers() {
         if (isStarted) {
-            for (Player player : players) {
-                player.start();
-            }
+            resume();
         } else {
-            executor = Executors.newFixedThreadPool(1);
-            for (Player player : players) {
-                executor.submit(player);
-            }
-            isStarted = true;
+            start();
         }
+    }
+
+    private void resume() {
+        snake.start();
+        for (Frog frog : frogs) {
+            try {
+                Thread.sleep(DELAY);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            frog.start();
+        }
+    }
+
+    private void start() {
+        executor = Executors.newFixedThreadPool(FROGS_COUNT + 1);
+        executor.submit(snake);
+        for (Frog frog : frogs) {
+            try {
+                Thread.sleep(DELAY);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            executor.submit(frog);
+        }
+        isStarted = true;
     }
 
     public void stopPlayers() {
@@ -97,7 +118,6 @@ public class Game {
             result.add(frog);
             frog.setBoard(board);
             board.addFrog(frog);
-            System.out.println(frog.getBody().getX() + " " + frog.getBody().getY());
         }
         return result;
     }
@@ -106,6 +126,9 @@ public class Game {
         view = new GUIGameView(N, M);
         view.setGame(this);
         snake.addListener(view);
+        for (Frog frog : frogs) {
+            frog.addListener(view);
+        }
     }
 
     private void setControllers() {
