@@ -11,8 +11,7 @@ public class StopGameController extends Controller implements ActionListener {
         super(game);
     }
 
-    // todo: Змей сейчас успевает сдвинуться на одну клетку после нажатия кнопки "Стоп"
     public void actionPerformed(ActionEvent e) {
-        game.killPlayers();
+        game.stopGame();
     }
 }

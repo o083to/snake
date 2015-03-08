@@ -2,6 +2,7 @@ package o083to.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class Observable {
@@ -16,5 +17,10 @@ public abstract class Observable {
         for (StateListener listener : listeners) {
             listener.update(changedCells);
         }
+    }
+
+    protected void notifyListeners(Cell cell) {
+        List<Cell> changedCells = Collections.singletonList(cell);
+        notifyListeners(changedCells);
     }
 }

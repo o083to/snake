@@ -1,5 +1,6 @@
 package o083to.model.snake;
 
+import o083to.Game;
 import o083to.model.Player;
 import o083to.model.Cell;
 import o083to.model.Direction;
@@ -14,10 +15,10 @@ public class Snake extends Player {
 
     private int length;
     private Direction direction = Direction.DOWN;
-    private LinkedList<Cell> body;
+    private final LinkedList<Cell> body;
 
-    public Snake(int length, int delay) {
-        super(delay);
+    public Snake(Game game, int length, int delay) {
+        super(game, delay);
         this.length = length;
         body = new LinkedList<Cell>();
         for (int y = 0; y < length; y++) {
@@ -35,20 +36,26 @@ public class Snake extends Player {
 
     @Override
     protected void move() {
-        // todo: пока что просто движется вперёд
+        Cell newHeadPosition = getNewHeadPosition(body.getFirst());
         List<Cell> changeList = new ArrayList<Cell>(3);
-        board.releaseCell(body.getLast());
+        game.getBoard().releaseCell(body.getLast());
         changeList.add(body.removeLast());
+        for (Cell bodyPart : body) {
+            if (newHeadPosition.equals(bodyPart)) {
+                die();
+                game.stopGame();    // todo: На картинке непонятно, что змей зациклился
+                return;
+            }
+        }
         changeList.add(body.getLast());
         changeList.add(body.getFirst());
-        // todo: проверка столкновения со стеной
-        Cell newHeadPosition = getNewHeadPosition(body.getFirst());
         body.addFirst(newHeadPosition);
         changeList.add(newHeadPosition);
         notifyListeners(changeList);
     }
 
     private Cell getNewHeadPosition(Cell oldHeadPosition) {
+        Game.Board board = game.getBoard();
         switch (direction) {
             case DOWN:
                 return board.getDownCell(oldHeadPosition);

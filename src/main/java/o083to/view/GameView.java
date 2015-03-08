@@ -17,4 +17,6 @@ public interface GameView extends StateListener {
     void addStartGameController(ActionListener controller);
 
     void addStopGameController(ActionListener controller);
+
+    void gameOver();
 }

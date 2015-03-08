@@ -1,5 +1,6 @@
 package o083to.model.frog;
 
+import o083to.Game;
 import o083to.model.Cell;
 import o083to.model.Player;
 
@@ -10,9 +11,16 @@ public abstract class Frog extends Player {
 
     protected volatile Cell position;
 
-    protected Frog(Cell position, int delay) {
-        super(delay);
+    protected Frog(Game game, Cell position, int delay) {
+        super(game, delay);
         this.position = position;
+    }
+
+    public void catchFrog() {
+        game.getBoard().releaseCell(position);
+        die();
+        game.onSnakeCaughtFrog(this);
+        notifyListeners(position);
     }
 
     public Cell getPosition() {
@@ -26,7 +34,7 @@ public abstract class Frog extends Player {
     @Override
     protected void move() {
         Cell oldPosition = position;
-        position = board.getNewCellForFrog(position);
+        position = game.getBoard().getNextCellForFrog(position);
         if (!position.equals(oldPosition)) {
             List<Cell> changeList = new ArrayList<Cell>(2);
             changeList.add(oldPosition);

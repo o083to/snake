@@ -4,17 +4,15 @@ import o083to.controller.game.MouseClickController;
 import o083to.controller.game.PauseGameController;
 import o083to.controller.game.StartGameController;
 import o083to.controller.game.StopGameController;
-import o083to.model.Board;
+import o083to.model.Cell;
 import o083to.model.Direction;
-import o083to.model.Player;
 import o083to.model.frog.Frog;
 import o083to.model.frog.GreenFrog;
 import o083to.model.snake.Snake;
 import o083to.view.GUIGameView;
 import o083to.view.GameView;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -22,7 +20,7 @@ public class Game {
 
     private static final int N = 10;
     private static final int M = 10;
-    private static final int LENGTH = 3;
+    private static final int LENGTH = 6;
     private static final int SNAKE_DELAY = 1000;
     private static final int DELAY = 150;
     private static final int FROG_DELAY_MULTIPLIER = 2;
@@ -31,7 +29,6 @@ public class Game {
     private GameView view;
     private final Board board;
     private final Snake snake;
-    private final List<Player> players = new ArrayList<Player>();
     private final List<Frog> frogs;
     private boolean isStarted;
     private ExecutorService executor;
@@ -44,12 +41,9 @@ public class Game {
 
     Game() {
         board = new Board(N, M);
-        snake = new Snake(LENGTH, SNAKE_DELAY);
-        snake.setBoard(board);
-        board.setSnake(snake);
-        players.add(snake);
+        snake = new Snake(this, LENGTH, SNAKE_DELAY);
+        board.markCellsAsBusy(snake.getBody());
         frogs = createFrogs(FROGS_COUNT, SNAKE_DELAY * FROG_DELAY_MULTIPLIER);
-        players.addAll(frogs);
     }
 
     public Snake getSnake() {
@@ -58,6 +52,10 @@ public class Game {
 
     public List<Frog> getFrogs() {
         return frogs;
+    }
+
+    public Board getBoard() {
+        return board;
     }
 
     public void startPlayers() {
@@ -95,14 +93,16 @@ public class Game {
     }
 
     public void stopPlayers() {
-        for (Player player : players) {
-            player.stay();
+        snake.stay();
+        for (Frog frog : frogs) {
+            frog.stay();
         }
     }
 
-    public void killPlayers() {
-        for (Player player : players) {
-            player.die();
+    public void stopGame() {
+        view.gameOver();
+        for (Frog frog : frogs) {
+            frog.die();
         }
     }
 
@@ -110,14 +110,17 @@ public class Game {
         snake.turn(direction);
     }
 
+    public void onSnakeCaughtFrog(Frog frog) {
+        frogs.remove(frog);
+        // todo: создать новую дичь
+    }
+
     private List<Frog> createFrogs(int count, int delay) {
         List<Frog> result = new ArrayList<Frog>(count);
         for (int i = 0; i < count; i++) {
             //todo: дичь должна быть разных видов
-            Frog frog = new GreenFrog(board.getFreeCell(), delay);
+            Frog frog = new GreenFrog(this, board.getFreeCell(), delay);
             result.add(frog);
-            frog.setBoard(board);
-            board.addFrog(frog);
         }
         return result;
     }
@@ -136,5 +139,113 @@ public class Game {
         view.addStartGameController(new StartGameController(this));
         view.addPauseGameController(new PauseGameController(this));
         view.addStopGameController(new StopGameController(this));
+    }
+
+    public class Board {
+
+        private final Set<Cell> busyCells = new HashSet<Cell>();
+
+        private final int maxX;
+        private final int maxY;
+        private final Random random = new Random();
+
+        Board(int width, int height) {
+            maxX = width - 1;
+            maxY = height - 1;
+        }
+
+        public void releaseCell(Cell cell) {
+            busyCells.remove(cell);
+        }
+
+        public void markCellsAsBusy(List<Cell> cells) {
+            for (Cell cell : cells) {
+                busyCells.add(cell);
+            }
+        }
+
+        public synchronized Cell getNextCellForFrog(Cell oldCell) {
+            Direction direction = Direction.fromInteger(random.nextInt(4));
+            for (int i = 0; i < 4; i++) {
+                Cell newCell = oldCell;
+                // todo: ну что это???
+                switch (direction) {
+                    case UP:
+                        newCell = upCell(oldCell);
+                        break;
+                    case DOWN:
+                        newCell = downCell(oldCell);
+                        break;
+                    case LEFT:
+                        newCell = leftCell(oldCell);
+                        break;
+                    case RIGHT:
+                        newCell = rightCell(oldCell);
+                }
+                if (busyCells.contains(newCell)) {
+                    direction = direction.turnLeft();
+                } else {
+                    busyCells.remove(oldCell);
+                    busyCells.add(newCell);
+                    return newCell;
+                }
+            }
+            return oldCell;
+        }
+
+        public synchronized Cell getFreeCell() {
+            Cell cell;
+            do {
+                int x = random.nextInt(maxX + 1);
+                int y = random.nextInt(maxY + 1);
+                cell = Cell.valueOf(x, y);
+            } while (busyCells.contains(cell));
+            busyCells.add(cell);
+            return cell;
+        }
+
+        public synchronized Cell getUpCell(Cell cell) {
+            Cell result = upCell(cell);
+            busyCells.add(result);
+            return result;
+        }
+
+        public synchronized Cell getDownCell(Cell cell) {
+            Cell result = downCell(cell);
+            busyCells.add(result);
+            return result;
+        }
+
+        public synchronized Cell getLeftCell(Cell cell) {
+            Cell result = leftCell(cell);
+            busyCells.add(result);
+            return result;
+        }
+
+        public synchronized Cell getRightCell(Cell cell) {
+            Cell result = rightCell(cell);
+            busyCells.add(result);
+            return result;
+        }
+
+        private Cell upCell(Cell cell) {
+            int oldY = cell.getY();
+            return Cell.valueOf(cell.getX(), oldY == 0 ? maxY : oldY - 1);
+        }
+
+        private Cell downCell(Cell cell) {
+            int oldY = cell.getY();
+            return Cell.valueOf(cell.getX(), oldY == maxY ? 0 : oldY + 1);
+        }
+
+        private Cell leftCell(Cell cell) {
+            int oldX = cell.getX();
+            return Cell.valueOf(oldX == 0 ? maxX : oldX - 1, cell.getY());
+        }
+
+        private Cell rightCell(Cell cell) {
+            int oldX = cell.getX();
+            return Cell.valueOf(oldX == maxX ? 0 : oldX + 1, cell.getY());
+        }
     }
 }

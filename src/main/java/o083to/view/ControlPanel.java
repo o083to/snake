@@ -20,6 +20,7 @@ public class ControlPanel extends JPanel {
     private final JButton startButton;
     private final JButton pauseButton;
     private final JButton stopButton;
+    private final ButtonStateController buttonStateController;
 
     public ControlPanel() {
         setBackground(BACKGROUND_COLOR);
@@ -32,11 +33,15 @@ public class ControlPanel extends JPanel {
         box.add(startButton);
         box.add(pauseButton);
         box.add(stopButton);
-        ButtonStateController buttonStateController = new ButtonStateController(startButton, pauseButton, stopButton);
+        buttonStateController = new ButtonStateController(startButton, pauseButton, stopButton);
         startButton.addActionListener(buttonStateController);
         pauseButton.addActionListener(buttonStateController);
         stopButton.addActionListener(buttonStateController);
         add(box);
+    }
+
+    public ButtonStateController getButtonStateController() {
+        return buttonStateController;
     }
 
     public void addPauseButtonListener(ActionListener listener) {

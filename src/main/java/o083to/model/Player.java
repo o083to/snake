@@ -1,19 +1,18 @@
 package o083to.model;
 
+import o083to.Game;
+
 public abstract class Player extends Observable implements Runnable {
 
-    protected Board board;
+    protected final Game game;
     private final int delay;
 
     private volatile boolean isMoving = true;
     private volatile boolean isAlive = true;
 
-    protected Player(int delay) {
+    protected Player(Game game, int delay) {
+        this.game = game;
         this.delay = delay;
-    }
-
-    public void setBoard(Board board) {
-        this.board = board;
     }
 
     protected abstract void move();

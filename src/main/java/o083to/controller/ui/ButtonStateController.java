@@ -25,6 +25,10 @@ public class ButtonStateController implements ActionListener {
         this.stopButton = stopButton;
     }
 
+    public void disableAllButtons() {
+        setStates(STOP_CLICKED);
+    }
+
     public void actionPerformed(ActionEvent e) {
         Object clickedButton = e.getSource();
         if (clickedButton == startButton) {
