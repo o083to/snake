@@ -2,7 +2,10 @@ package o083to.view;
 
 import o083to.Game;
 import o083to.model.Cell;
+import o083to.model.frog.BlueFrog;
 import o083to.model.frog.Frog;
+import o083to.model.frog.GreenFrog;
+import o083to.model.frog.RedFrog;
 import o083to.model.snake.Snake;
 
 import javax.swing.*;
@@ -21,8 +24,13 @@ public class GameBoard extends JPanel {
 
     private static final Color BACKGROUND_COLOR = Color.BLACK;
     private static final Color SNAKE_COLOR = Color.YELLOW;
-    private static final Color GREEN_FROG_COLOR = Color.GREEN;
     private Game game;
+    private final static Map<Class, Color> frogColors = new HashMap<Class, Color>(3);
+    static {
+        frogColors.put(GreenFrog.class, Color.GREEN);
+        frogColors.put(RedFrog.class, Color.RED);
+        frogColors.put(BlueFrog.class, Color.BLUE);
+    }
 
     public GameBoard(int widthInCells, int heightInCells) {
         setPreferredSize(new Dimension(widthInCells * CELL_SIZE, heightInCells * CELL_SIZE));
@@ -55,9 +63,8 @@ public class GameBoard extends JPanel {
     }
 
     private static void paintFrogs(Graphics2D g2d, List<Frog> frogs) {
-        // todo: они разные
         for (Frog frog : frogs) {
-            paintCircle(g2d, frog.getPosition(), FROG_DIAMETER, GREEN_FROG_COLOR);
+            paintCircle(g2d, frog.getPosition(), FROG_DIAMETER, frogColors.get(frog.getClass()));
         }
     }
 

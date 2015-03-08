@@ -6,8 +6,10 @@ import o083to.controller.game.StartGameController;
 import o083to.controller.game.StopGameController;
 import o083to.model.Cell;
 import o083to.model.Direction;
+import o083to.model.frog.BlueFrog;
 import o083to.model.frog.Frog;
 import o083to.model.frog.GreenFrog;
+import o083to.model.frog.RedFrog;
 import o083to.model.snake.Snake;
 import o083to.view.GUIGameView;
 import o083to.view.GameView;
@@ -26,6 +28,7 @@ public class Game {
     private static final int DELAY = 150;
     private static final int FROG_DELAY_MULTIPLIER = 2;
     private static final int FROGS_COUNT = 8;
+    private static final double BLUE_FROGS_PERCENT = 0.25;
 
     private int score;
     private GameView view;
@@ -34,6 +37,9 @@ public class Game {
     private final List<Frog> frogs;
     private boolean isStarted;
     private ExecutorService executor;
+    private final Random random = new Random();
+    private int blueFrogsCount;
+    private final int maxBlueFrogsCount;
 
     public static void main(String[] args) {
         Game game = new Game();
@@ -42,6 +48,7 @@ public class Game {
     }
 
     Game() {
+        maxBlueFrogsCount = (int)(FROGS_COUNT * BLUE_FROGS_PERCENT);
         board = new Board(N, M);
         snake = new Snake(this, LENGTH, SNAKE_DELAY);
         board.markCellsAsBusy(snake.getBody());
@@ -115,7 +122,9 @@ public class Game {
 
     public void onSnakeCaughtFrog(Frog frog) {
         frogs.remove(frog);
-        // todo: создать новую дичь
+        Frog newFrog = createRandomFrog(SNAKE_DELAY * FROG_DELAY_MULTIPLIER);
+        frogs.add(newFrog);
+        executor.submit(newFrog);
     }
 
     public void checkMove(Cell cell) {
@@ -139,13 +148,24 @@ public class Game {
     }
 
     private List<Frog> createFrogs(int count, int delay) {
-        List<Frog> result = new CopyOnWriteArrayList<Frog>();
+        List<Frog> result = new CopyOnWriteArrayList<Frog>(); // todo: Здесь точно должен быть CopyOnWriteArrayList?
         for (int i = 0; i < count; i++) {
-            //todo: дичь должна быть разных видов
-            Frog frog = new GreenFrog(this, board.getFreeCell(), delay);
+            Frog frog = createRandomFrog(delay);
             result.add(frog);
         }
         return result;
+    }
+
+    private Frog createRandomFrog(int delay) {
+        int i = random.nextInt();
+        if (i % 5 == 0 && FROGS_COUNT > 1 && blueFrogsCount < maxBlueFrogsCount) {
+            blueFrogsCount++;
+            return new BlueFrog(this, board.getFreeCell(), delay);
+        } else if (i % 3 == 0) {
+            return new RedFrog(this, board.getFreeCell(), delay);
+        } else {
+            return new GreenFrog(this, board.getFreeCell(), delay);
+        }
     }
 
     private void setView() {
