@@ -16,7 +16,7 @@ public class GreenFrog extends Frog {
 
     @Override
     public int getScoreFactor() {
-        return -1;
+        return 1;
     }
 
     @Override

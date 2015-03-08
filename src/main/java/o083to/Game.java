@@ -13,6 +13,7 @@ import o083to.view.GUIGameView;
 import o083to.view.GameView;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -26,6 +27,7 @@ public class Game {
     private static final int FROG_DELAY_MULTIPLIER = 2;
     private static final int FROGS_COUNT = 8;
 
+    private int score;
     private GameView view;
     private final Board board;
     private final Snake snake;
@@ -127,16 +129,17 @@ public class Game {
                     } else {
                         snake.reduce();
                     }
+                    score += frog.getScoreFactor();
+                    view.updateScore(score);
                 }
                 frog.catchFrog();
-                // todo: увеличить счёт
                 break;
             }
         }
     }
 
     private List<Frog> createFrogs(int count, int delay) {
-        List<Frog> result = new ArrayList<Frog>(count);
+        List<Frog> result = new CopyOnWriteArrayList<Frog>();
         for (int i = 0; i < count; i++) {
             //todo: дичь должна быть разных видов
             Frog frog = new GreenFrog(this, board.getFreeCell(), delay);

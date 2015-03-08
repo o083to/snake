@@ -17,7 +17,7 @@ public class Snake extends Player {
     private int length;
     private Direction direction = Direction.DOWN;
     private final LinkedList<Cell> body;
-    private Cell oldTailPosition;
+    private Cell oldTailPosition = Cell.valueOf(0, 0);
 
     public Snake(Game game, int length, int delay) {
         super(game, delay);

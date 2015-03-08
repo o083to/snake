@@ -11,7 +11,7 @@ import java.io.IOException;
 public class ControlPanel extends JPanel {
 
     private static final Dimension BUTTON_SIZE = new Dimension(32, 32);
-    private static final Color BUTTON_COLOR = Color.WHITE;
+    private static final Color BUTTON_COLOR = Color.ORANGE;
     private static final Color BACKGROUND_COLOR = Color.DARK_GRAY;
     private static final String PATH_TO_START_ICON = "/start.png";
     private static final String PATH_TO_PAUSE_ICON = "/pause.png";

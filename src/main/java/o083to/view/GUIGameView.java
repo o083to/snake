@@ -13,11 +13,14 @@ public class GUIGameView extends JFrame implements GameView {
 
     private final GameBoard gameBoard;
     private final ControlPanel controlPanel;
+    private final ScorePanel scorePanel;
 
     public GUIGameView(int widthInCells, int heightInCells) {
         super(TITLE);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         Box layout = Box.createVerticalBox();
+        scorePanel = new ScorePanel();
+        layout.add(scorePanel);
         gameBoard = new GameBoard(widthInCells, heightInCells);
         layout.add(gameBoard);
         controlPanel = new ControlPanel();
@@ -60,5 +63,9 @@ public class GUIGameView extends JFrame implements GameView {
 
     public void addStopGameController(ActionListener controller) {
         controlPanel.addStopButtonListener(controller);
+    }
+
+    public void updateScore(int value) {
+        scorePanel.setScore(value);
     }
 }
