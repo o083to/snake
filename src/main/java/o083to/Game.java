@@ -101,6 +101,7 @@ public class Game {
 
     public void stopGame() {
         view.gameOver();
+        snake.die();
         for (Frog frog : frogs) {
             frog.die();
         }
@@ -113,6 +114,25 @@ public class Game {
     public void onSnakeCaughtFrog(Frog frog) {
         frogs.remove(frog);
         // todo: создать новую дичь
+    }
+
+    public void checkMove(Cell cell) {
+        for (Frog frog : frogs) {
+            if (cell.equals(frog.getPosition())) {
+                if (frog.isPoisonous()) {
+                    stopGame();
+                } else {
+                    if (frog.getLengthFactor() > 0) {
+                        snake.grow();
+                    } else {
+                        snake.reduce();
+                    }
+                }
+                frog.catchFrog();
+                // todo: увеличить счёт
+                break;
+            }
+        }
     }
 
     private List<Frog> createFrogs(int count, int delay) {
@@ -158,7 +178,11 @@ public class Game {
             busyCells.remove(cell);
         }
 
-        public void markCellsAsBusy(List<Cell> cells) {
+        public synchronized void markCellAsBusy(Cell cell) {
+            busyCells.add(cell);
+        }
+
+        public synchronized void markCellsAsBusy(List<Cell> cells) {
             for (Cell cell : cells) {
                 busyCells.add(cell);
             }
@@ -204,27 +228,31 @@ public class Game {
             return cell;
         }
 
-        public synchronized Cell getUpCell(Cell cell) {
+        public synchronized Cell snakeGoUp(Cell cell) {
             Cell result = upCell(cell);
             busyCells.add(result);
+            checkMove(result);
             return result;
         }
 
-        public synchronized Cell getDownCell(Cell cell) {
+        public synchronized Cell snakeGoDown(Cell cell) {
             Cell result = downCell(cell);
             busyCells.add(result);
+            checkMove(result);
             return result;
         }
 
-        public synchronized Cell getLeftCell(Cell cell) {
+        public synchronized Cell snakeGoLeft(Cell cell) {
             Cell result = leftCell(cell);
             busyCells.add(result);
+            checkMove(result);
             return result;
         }
 
-        public synchronized Cell getRightCell(Cell cell) {
+        public synchronized Cell snakeGoRight(Cell cell) {
             Cell result = rightCell(cell);
             busyCells.add(result);
+            checkMove(result);
             return result;
         }
 

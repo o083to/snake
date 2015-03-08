@@ -17,7 +17,6 @@ public abstract class Frog extends Player {
     }
 
     public void catchFrog() {
-        game.getBoard().releaseCell(position);
         die();
         game.onSnakeCaughtFrog(this);
         notifyListeners(position);
@@ -30,6 +29,8 @@ public abstract class Frog extends Player {
     public abstract int getLengthFactor();
 
     public abstract int getScoreFactor();
+
+    public abstract boolean isPoisonous();
 
     @Override
     protected void move() {

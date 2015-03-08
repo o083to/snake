@@ -5,20 +5,22 @@ import o083to.model.Cell;
 
 public class GreenFrog extends Frog {
 
-    private static final int LENGTH_FACTOR = 1;
-    private static final int SCORE_FACTOR = 1;
-
     public GreenFrog(Game game, Cell position, int delay) {
         super(game, position, delay);
     }
 
     @Override
     public int getLengthFactor() {
-        return LENGTH_FACTOR;
+        return 1;
     }
 
     @Override
     public int getScoreFactor() {
-        return SCORE_FACTOR;
+        return -1;
+    }
+
+    @Override
+    public boolean isPoisonous() {
+        return false;
     }
 }
