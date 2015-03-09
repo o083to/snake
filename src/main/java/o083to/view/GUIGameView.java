@@ -46,7 +46,7 @@ public class GUIGameView extends JFrame implements GameView {
 
     public void gameOver() {
         controlPanel.getButtonStateController().disableAllButtons();
-        //todo: вывести сообщение
+        scorePanel.writeGameOver();
     }
 
     public void addMouseClickController(MouseListener controller) {

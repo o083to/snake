@@ -24,13 +24,13 @@ public class GameBoard extends JPanel {
     public static final int FROG_DIAMETER = 24;
 
     private static final Color BACKGROUND_COLOR = Color.BLACK;
-    private static final Color SNAKE_COLOR = Color.YELLOW;
+    private static final Color SNAKE_COLOR = new Color(0xffd700);
     private Game game;
     private final static Map<Class, Color> frogColors = new HashMap<Class, Color>(3);
     static {
-        frogColors.put(GreenFrog.class, Color.GREEN);
-        frogColors.put(RedFrog.class, Color.RED);
-        frogColors.put(BlueFrog.class, Color.BLUE);
+        frogColors.put(GreenFrog.class, new Color(0x6b8e23));
+        frogColors.put(RedFrog.class, new Color(0xb22222));
+        frogColors.put(BlueFrog.class, new Color(0x008b8b));
     }
 
     public GameBoard(int widthInCells, int heightInCells) {
