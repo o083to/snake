@@ -1,6 +1,7 @@
 package o083to.model.snake;
 
 import o083to.Game;
+import o083to.model.Board;
 import o083to.model.Player;
 import o083to.model.Cell;
 import o083to.model.Direction;
@@ -83,7 +84,7 @@ public class Snake extends Player {
     }
 
     private Cell getNewHeadPosition(Cell oldHeadPosition) {
-        Game.Board board = game.getBoard();
+        Board board = game.getBoard();
         switch (direction) {
             case DOWN:
                 return board.snakeGoDown(oldHeadPosition);
