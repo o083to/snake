@@ -1,7 +1,7 @@
-package o083to.view;
+package o083to.view.board;
 
 import o083to.Game;
-import o083to.model.Cell;
+import o083to.model.board.Cell;
 import o083to.model.frog.BlueFrog;
 import o083to.model.frog.Frog;
 import o083to.model.frog.GreenFrog;
@@ -11,7 +11,6 @@ import o083to.model.snake.Snake;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseListener;
-import java.awt.geom.Point2D;
 import java.util.*;
 import java.util.List;
 

@@ -1,6 +1,7 @@
-package o083to.model;
+package o083to.model.board;
 
 import o083to.Game;
+import o083to.model.Direction;
 
 import java.util.HashSet;
 import java.util.List;
@@ -39,7 +40,6 @@ public class Board {
         Direction direction = Direction.fromInteger(random.nextInt(4));
         for (int i = 0; i < 4; i++) {
             Cell newCell = oldCell;
-            // todo: ну что это???
             switch (direction) {
                 case UP:
                     newCell = upCell(oldCell);
@@ -70,7 +70,7 @@ public class Board {
             int x = random.nextInt(maxX + 1);
             int y = random.nextInt(maxY + 1);
             cell = Cell.valueOf(x, y);
-        } while (busyCells.contains(cell));
+        } while (busyCells.contains(cell) || snakeIsNear(cell));
         busyCells.add(cell);
         return cell;
     }
@@ -101,6 +101,12 @@ public class Board {
         busyCells.add(result);
         game.checkMove(result);
         return result;
+    }
+
+    private boolean snakeIsNear(Cell cell) {
+        Cell snakeHead = game.getSnake().getBody().getFirst();
+        return snakeHead.equals(upCell(cell)) || snakeHead.equals(downCell(cell))
+                    || snakeHead.equals(leftCell(cell)) || snakeHead.equals(rightCell(cell));
     }
 
     private Cell upCell(Cell cell) {

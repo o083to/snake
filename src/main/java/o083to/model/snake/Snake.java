@@ -1,9 +1,9 @@
 package o083to.model.snake;
 
 import o083to.Game;
-import o083to.model.Board;
+import o083to.model.board.Board;
 import o083to.model.Player;
-import o083to.model.Cell;
+import o083to.model.board.Cell;
 import o083to.model.Direction;
 
 import java.util.ArrayList;
@@ -49,7 +49,7 @@ public class Snake extends Player {
 
         for (Cell bodyPart : body) {
             if (newHeadPosition.equals(bodyPart)) {
-                game.stopGame();    // todo: На картинке непонятно, что змей зациклился
+                game.stopGame();
                 return;
             }
         }
@@ -65,7 +65,6 @@ public class Snake extends Player {
         length++;
         game.getBoard().markCellAsBusy(oldTailPosition);
         List<Cell> changeList = new ArrayList<Cell>(2);
-        // todo: дичь не должна попадать туда, где может появиться хвост
         changeList.add(body.getLast());
         changeList.add(oldTailPosition);
         body.addLast(oldTailPosition);

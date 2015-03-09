@@ -1,10 +1,9 @@
-package o083to.model;
+package o083to.model.board;
 
 
 import java.util.HashMap;
 import java.util.Map;
 
-// todo: Что с синхронизацией всего этого?
 public class Cell {
 
     private static final Map<Integer, Cell> CACHE = new HashMap<Integer, Cell>();

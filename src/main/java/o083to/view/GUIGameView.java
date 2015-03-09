@@ -1,7 +1,10 @@
 package o083to.view;
 
 import o083to.Game;
-import o083to.model.Cell;
+import o083to.model.board.Cell;
+import o083to.view.board.GameBoard;
+import o083to.view.panel.ControlPanel;
+import o083to.view.panel.ScorePanel;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;

@@ -1,9 +1,9 @@
-package o083to.view;
+package o083to.view.panel;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class ScorePanel extends Panel {
+public class ScorePanel extends o083to.view.panel.Panel {
 
     private static final Color SCORE_TEXT_COLOR = new Color(0xdaa520);
     private static final Color GAME_OVER_TEXT_COLOR = new Color(0xff4500);

@@ -1,4 +1,4 @@
-package o083to.view;
+package o083to.view.panel;
 
 import o083to.controller.ui.ButtonStateController;
 
@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-public class ControlPanel extends Panel {
+public class ControlPanel extends o083to.view.panel.Panel {
 
     private static final Dimension BUTTON_SIZE = new Dimension(32, 32);
     private static final String PATH_TO_START_ICON = "/start.png";

@@ -1,4 +1,4 @@
-package o083to.view;
+package o083to.view.panel;
 
 import javax.swing.*;
 import java.awt.*;

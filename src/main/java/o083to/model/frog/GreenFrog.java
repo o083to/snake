@@ -1,7 +1,7 @@
 package o083to.model.frog;
 
 import o083to.Game;
-import o083to.model.Cell;
+import o083to.model.board.Cell;
 
 public class GreenFrog extends Frog {
 
