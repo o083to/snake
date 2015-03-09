@@ -22,44 +22,56 @@ import java.util.concurrent.Executors;
 
 public class Game {
 
-    private static final int N = 10;
-    private static final int M = 10;
-    private static final int LENGTH = 6;
-    private static final int SNAKE_DELAY = 1000;
-    private static final int DELAY = 150;
     private static final int FROG_DELAY_MULTIPLIER = 2;
-    private static final int FROGS_COUNT = 8;
     private static final double BLUE_FROGS_PERCENT = 0.25;
 
-    private int score;
+    private final int frogsCount;
+    private final int frogDelay;
+    private final int frogStartDelay;
+
     private final GameView view;
     private final Board board;
     private final Snake snake;
     private final List<Frog> frogs;
-    private boolean isStarted;
-    private boolean isFinished;
+
     private ExecutorService executor;
     private final Random random = new Random();
+
+    private int score;
+    private boolean isStarted;
+    private boolean isFinished;
     private int blueFrogsCount;
     private final int maxBlueFrogsCount;
 
     public static void main(String[] args) {
-        Game game = new Game();
-        game.setControllers();
+        UserInputValidator validator = new UserInputValidator();
+        validator.validate(args);
+        new Game(
+                validator.getN(),
+                validator.getM(),
+                validator.getSnakeLength(),
+                validator.getFrogsCount(),
+                validator.getSnakeDelay()
+        );
     }
 
-    Game() {
-        maxBlueFrogsCount = (int)Math.ceil(FROGS_COUNT * BLUE_FROGS_PERCENT);
+    Game(int n, int m, int snakeLength, int frogsCount, int snakeDelay) {
+        this.frogsCount = frogsCount;
+        frogStartDelay = snakeDelay / frogsCount;
+        frogDelay = snakeDelay * FROG_DELAY_MULTIPLIER;
 
-        view = new GUIGameView(N, M);
+        maxBlueFrogsCount = (int)Math.ceil(frogsCount * BLUE_FROGS_PERCENT);
+
+        view = new GUIGameView(n, m);
         view.setGame(this);
 
-        board = new Board(this, N, M);
-        snake = new Snake(this, LENGTH, SNAKE_DELAY);
+        board = new Board(this, n, m);
+        snake = new Snake(this, snakeLength, snakeDelay);
         snake.addListener(view);
         board.markCellsAsBusy(snake.getBody());
 
-        frogs = createFrogs(FROGS_COUNT, SNAKE_DELAY * FROG_DELAY_MULTIPLIER);
+        frogs = createFrogs(frogsCount, frogDelay);
+        setControllers();
     }
 
     public Snake getSnake() {
@@ -86,7 +98,7 @@ public class Game {
         snake.start();
         for (Frog frog : frogs) {
             try {
-                Thread.sleep(DELAY);
+                Thread.sleep(frogStartDelay);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -95,11 +107,11 @@ public class Game {
     }
 
     private void start() {
-        executor = Executors.newFixedThreadPool(FROGS_COUNT + 1);
+        executor = Executors.newFixedThreadPool(frogsCount + 1);
         executor.submit(snake);
         for (Frog frog : frogs) {
             try {
-                Thread.sleep(DELAY);
+                Thread.sleep(frogStartDelay);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -131,7 +143,7 @@ public class Game {
     public void onSnakeCaughtFrog(Frog frog) {
         frogs.remove(frog);
         if (!isFinished) {
-            Frog newFrog = createRandomFrog(SNAKE_DELAY * FROG_DELAY_MULTIPLIER);
+            Frog newFrog = createRandomFrog(frogDelay);
             frogs.add(newFrog);
             executor.submit(newFrog);
         }
@@ -159,7 +171,7 @@ public class Game {
     }
 
     private List<Frog> createFrogs(int count, int delay) {
-        List<Frog> result = new CopyOnWriteArrayList<Frog>(); // todo: Здесь точно должен быть CopyOnWriteArrayList?
+        List<Frog> result = new CopyOnWriteArrayList<Frog>();
         for (int i = 0; i < count; i++) {
             Frog frog = createRandomFrog(delay);
             result.add(frog);
@@ -170,7 +182,7 @@ public class Game {
     private Frog createRandomFrog(int delay) {
         Frog frog;
         int i = random.nextInt();
-        if (i % 5 == 0 && FROGS_COUNT > 1 && blueFrogsCount < maxBlueFrogsCount) {
+        if (i % 5 == 0 && frogsCount > 1 && blueFrogsCount < maxBlueFrogsCount) {
             blueFrogsCount++;
             frog = new BlueFrog(this, board.getFreeCell(), delay);
         } else if (i % 3 == 0) {
