@@ -3,6 +3,7 @@ package o083to.model.frog;
 import o083to.Game;
 import o083to.model.Cell;
 import o083to.model.Player;
+import o083to.model.StateListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,12 @@ public abstract class Frog extends Player {
     public abstract int getScoreFactor();
 
     public abstract boolean isPoisonous();
+
+    @Override
+    public void addListener(StateListener stateListener) {
+        super.addListener(stateListener);
+        notifyListeners(position);
+    }
 
     @Override
     protected void move() {

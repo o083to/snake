@@ -27,11 +27,11 @@ public class Game {
     private static final int SNAKE_DELAY = 1000;
     private static final int DELAY = 150;
     private static final int FROG_DELAY_MULTIPLIER = 2;
-    private static final int FROGS_COUNT = 8;
+    private static final int FROGS_COUNT = 2;
     private static final double BLUE_FROGS_PERCENT = 0.25;
 
     private int score;
-    private GameView view;
+    private final GameView view;
     private final Board board;
     private final Snake snake;
     private final List<Frog> frogs;
@@ -43,15 +43,20 @@ public class Game {
 
     public static void main(String[] args) {
         Game game = new Game();
-        game.setView();
         game.setControllers();
     }
 
     Game() {
-        maxBlueFrogsCount = (int)(FROGS_COUNT * BLUE_FROGS_PERCENT);
+        maxBlueFrogsCount = (int)Math.ceil(FROGS_COUNT * BLUE_FROGS_PERCENT);
+
+        view = new GUIGameView(N, M);
+        view.setGame(this);
+
         board = new Board(N, M);
         snake = new Snake(this, LENGTH, SNAKE_DELAY);
+        snake.addListener(view);
         board.markCellsAsBusy(snake.getBody());
+
         frogs = createFrogs(FROGS_COUNT, SNAKE_DELAY * FROG_DELAY_MULTIPLIER);
     }
 
@@ -157,24 +162,18 @@ public class Game {
     }
 
     private Frog createRandomFrog(int delay) {
+        Frog frog;
         int i = random.nextInt();
         if (i % 5 == 0 && FROGS_COUNT > 1 && blueFrogsCount < maxBlueFrogsCount) {
             blueFrogsCount++;
-            return new BlueFrog(this, board.getFreeCell(), delay);
+            frog = new BlueFrog(this, board.getFreeCell(), delay);
         } else if (i % 3 == 0) {
-            return new RedFrog(this, board.getFreeCell(), delay);
+            frog = new RedFrog(this, board.getFreeCell(), delay);
         } else {
-            return new GreenFrog(this, board.getFreeCell(), delay);
+            frog = new GreenFrog(this, board.getFreeCell(), delay);
         }
-    }
-
-    private void setView() {
-        view = new GUIGameView(N, M);
-        view.setGame(this);
-        snake.addListener(view);
-        for (Frog frog : frogs) {
-            frog.addListener(view);
-        }
+        frog.addListener(view);
+        return frog;
     }
 
     private void setControllers() {
