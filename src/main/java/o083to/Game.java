@@ -27,7 +27,7 @@ public class Game {
     private static final int SNAKE_DELAY = 1000;
     private static final int DELAY = 150;
     private static final int FROG_DELAY_MULTIPLIER = 2;
-    private static final int FROGS_COUNT = 2;
+    private static final int FROGS_COUNT = 8;
     private static final double BLUE_FROGS_PERCENT = 0.25;
 
     private int score;
@@ -36,6 +36,7 @@ public class Game {
     private final Snake snake;
     private final List<Frog> frogs;
     private boolean isStarted;
+    private boolean isFinished;
     private ExecutorService executor;
     private final Random random = new Random();
     private int blueFrogsCount;
@@ -114,6 +115,7 @@ public class Game {
     }
 
     public void stopGame() {
+        isFinished = true;
         view.gameOver();
         snake.die();
         for (Frog frog : frogs) {
@@ -127,9 +129,11 @@ public class Game {
 
     public void onSnakeCaughtFrog(Frog frog) {
         frogs.remove(frog);
-        Frog newFrog = createRandomFrog(SNAKE_DELAY * FROG_DELAY_MULTIPLIER);
-        frogs.add(newFrog);
-        executor.submit(newFrog);
+        if (!isFinished) {
+            Frog newFrog = createRandomFrog(SNAKE_DELAY * FROG_DELAY_MULTIPLIER);
+            frogs.add(newFrog);
+            executor.submit(newFrog);
+        }
     }
 
     public void checkMove(Cell cell) {
@@ -147,6 +151,7 @@ public class Game {
                     view.updateScore(score);
                 }
                 frog.catchFrog();
+                onSnakeCaughtFrog(frog);
                 break;
             }
         }

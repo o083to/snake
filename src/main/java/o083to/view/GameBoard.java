@@ -11,6 +11,7 @@ import o083to.model.snake.Snake;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseListener;
+import java.awt.geom.Point2D;
 import java.util.*;
 import java.util.List;
 
@@ -49,8 +50,8 @@ public class GameBoard extends JPanel {
     public void paint(Graphics graphics) {
         super.paint(graphics);
         Graphics2D g2d = (Graphics2D) graphics;
-        paintFrogs(g2d, game.getFrogs());
-        paintSnake(g2d, game.getSnake());
+        if (game.getFrogs() != null) paintFrogs(g2d, game.getFrogs());
+        if (game.getSnake() != null) paintSnake(g2d, game.getSnake());
     }
 
     private static void paintSnake(Graphics2D g2d, Snake snake) {

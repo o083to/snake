@@ -19,7 +19,6 @@ public abstract class Frog extends Player {
 
     public void catchFrog() {
         die();
-        game.onSnakeCaughtFrog(this);
         notifyListeners(position);
     }
 
